@@ -16,11 +16,17 @@ const int HEIGHT = 800;
 
 // Define how many frames per seconds we want our
 // applications to run.
-const unsigned int FRAMES_PER_SECOND = 30;
+const unsigned int FRAMES_PER_SECOND = 1000;
 const unsigned int UPDATE_INTERVAL_MS = 1000 / FRAMES_PER_SECOND;
 
 // Control the angle to rotate the red square
-float angle = 0;
+float angleX = 0;
+float angleY = 0;
+float x = 0;
+float y = 0;
+float z = 0;
+bool girarX = 0;
+bool girarY = 0;
 
 void renderCoordinateAxis()
 {
@@ -49,6 +55,61 @@ void renderCoordinateAxis()
 	glEnd();
 }
 
+void renderMyCubePlease(){
+
+	glTranslatef(x,y,z);
+	glRotatef(angleX, 1.0, 0.0, 0.0);
+	glRotatef(angleY, 0.0, 1.0, 0.0);
+
+	// glRotatef(angle, 0.0f, 1.0f, 0.0f);
+
+	glColor3f(0, 0, 1);
+	glBegin(GL_LINES);
+		glVertex3f(-1.0, -1.0, -1.0);
+		glVertex3f(1.0, -1.0, -1.0);
+		
+		glVertex3f(-1.0, 1.0, -1.0);
+		glVertex3f(1.0, 1.0, -1.0);
+
+		glVertex3f(-1.0, 1.0, -1.0);
+		glVertex3f(-1.0, -1.0, -1.0);
+		
+		glVertex3f(1.0, 1.0, -1.0);
+		glVertex3f(1.0, -1.0, -1.0);
+	glEnd();
+
+
+	glBegin(GL_LINES);
+		glVertex3f(-1.0, -1.0, 1.0);
+		glVertex3f(1.0, -1.0, 1.0);
+		
+		glVertex3f(-1.0, 1.0, 1.0);
+		glVertex3f(1.0, 1.0, 1.0);
+
+		glVertex3f(-1.0, 1.0, 1.0);
+		glVertex3f(-1.0, -1.0, 1.0);
+		
+		glVertex3f(1.0, 1.0, 1.0);
+		glVertex3f(1.0, -1.0, 1.0);
+	glEnd();
+
+	glColor3f(1, 0, 0);
+	glBegin(GL_LINES);
+		glVertex3f(1.0, -1.0, -1.0);
+		glVertex3f(1.0, -1.0, 1.0);
+		
+		glVertex3f(1.0, 1.0, -1.0);
+		glVertex3f(1.0, 1.0, 1.0);
+
+		glVertex3f(-1.0, -1.0, -1.0);
+		glVertex3f(-1.0, -1.0, 1.0);
+		
+		glVertex3f(-1.0, 1.0, -1.0);
+		glVertex3f(-1.0, 1.0, 1.0);
+	glEnd();
+
+}
+
 void display()
 {
 	// Clear the screen painting it with the white color
@@ -64,16 +125,23 @@ void display()
 	glTranslatef(0, 0, -10.0f);
 
 	// Render the X and Y axis to guide ourselves.
-	renderCoordinateAxis();
+	// renderCoordinateAxis();
 
 	// Rotate the red square by "angle" degrees.
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	// glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	// glRotatef(angle, 0.0f, 1.0f, 0.0f);
 	
 	// Render a red square
 	//        R  G  B
-	glColor3f(1, 0, 0);
+	// glColor3f(0, 0, 1);
 	//        x1    y1    x2     y2
-	glRectf(-1.0f, 1.0f, 1.0f, -1.0f);
+	// glRectf(-1.0f, 1.0f, 1.0f, -1.0f);
+	// glRectf(-1.0f, 1.0f, 1.0f, -1.0f);
+
+	// glutWireCube(2.0);
+	// glutWireTeapot(2.0);
+
+	renderMyCubePlease();
 
 	// Start the rendering on a new frame
 	glutSwapBuffers();
@@ -82,7 +150,20 @@ void display()
 void update(int value)
 {
 	// Update the angle of rotation
-	angle += 3;
+	if(girarX)
+		angleX += 3;
+
+	if(girarY)
+		angleY += 3;
+
+	// if(ax)
+	// 	x += 3;
+	
+	// if(ay)
+	// 	y += 3;
+
+	// if(az)
+	// 	z += 3;
 
 	// Request a new frame rendering
 	glutPostRedisplay();
@@ -92,12 +173,24 @@ void update(int value)
 	glutTimerFunc(UPDATE_INTERVAL_MS, update, 0);
 }
 
-void keyboard(unsigned char key, int x, int y)
+void keyboard(unsigned char key, int xx, int yy)
 {
 	if (key == 27) {
 		// ESC key
 		exit(0);
-	}
+	}else if(key == 'a'){
+		x -= 0.1;
+	}else if(key == 's'){
+		y -= 0.1;
+	}else if(key == 'd'){
+		x += 0.1;
+	}else if(key == 'w'){
+		y += 0.1;
+	}else if(key == 'q'){
+		girarX = !girarX;
+	}else if(key == 'e'){
+		girarY = !girarY;
+	};
 }
 
 void mouse(int button, int state, int x, int y)
