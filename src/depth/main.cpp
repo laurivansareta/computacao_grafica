@@ -64,6 +64,9 @@ void renderScene()
 	glutSolidCube(1.0f);
 }
 
+float angulo = 0.1;
+float x = 1;
+
 void display()
 {
 	// Clear the screen painting it with the white color
@@ -74,9 +77,12 @@ void display()
 	// with no transformation at all.
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	angulo += 2;
+
+	glRotatef(angulo, 0.0f, 1.0f, 0.0f);
 
 	// Move the camera away from the origin along the Z axis by 10 pixels.
-	glTranslatef(0, 0, -10.0f);
+	glTranslatef(0, 0, -100.0f);
 
 	// Rotate everything by a few degrees around the Y axis.
 	glRotatef(15.0f, 0.0f, 1.0f, 0.0f);
@@ -117,7 +123,7 @@ void initView()
 	
 	// Reset any existing projection settings and adjust the field-of-view (FOV)
 	glLoadIdentity();
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 200.0);
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 2000.0);
 	
 	// From now on, every transformation is to be applied on each object, e.g. modelview.
 	glMatrixMode(GL_MODELVIEW);
